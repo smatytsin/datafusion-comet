@@ -19,13 +19,11 @@
 
 package org.apache.spark.sql.comet.shims
 
-import scala.collection.mutable.ArrayBuffer
-
 import org.apache.spark.executor.TaskMetrics
 import org.apache.spark.util.AccumulatorV2
 
 object ShimTaskMetrics {
 
   def getTaskAccumulator(taskMetrics: TaskMetrics): Option[AccumulatorV2[_, _]] =
-    taskMetrics.withExternalAccums(identity[ArrayBuffer[AccumulatorV2[_, _]]](_)).lastOption
+    taskMetrics.externalAccums.lastOption
 }
