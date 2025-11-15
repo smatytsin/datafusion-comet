@@ -1,0 +1,38 @@
+yum install java-11-openjdk-devel.x86_64
+yum install java-17-openjdk-devel.x86_64
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+source ~/.profile
+source ~/.cargo/env
+
+yum install clang-devel
+
+git clone --depth 1 --single-branch --branch branch-0.11_spark3.5.1 https://github.com/smatytsin/datafusion-comet.git
+
+# для более старых (можно еще haswell)
+export RUSTFLAGS="-C target-cpu=broadwell"
+export CFLAGS="-march=broadwell"
+export CXXFLAGS="-march=broadwell"
+
+
+# для intel skylake+
+export RUSTFLAGS="-Ctarget-cpu=skylake"
+export CFLAGS="-march=skylake"
+export CXXFLAGS="-march=skylake"
+
+
+cd datafusion-comet
+
+
+export COMET_FEATURES=hdfs
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+export CCACHE_DISABLE=1
+rm ./mvnw
+ln -s /usr/lib/maven/bin/mvn ./mvnw
+
+make release-nogit PROFILES="-Pspark-3.5"
+
+
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+
+make release-nogit PROFILES="-Pspark-4.0"
