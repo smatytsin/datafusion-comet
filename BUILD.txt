@@ -9,6 +9,9 @@ yum install clang-devel
 
 git clone --depth 1 --single-branch --branch branch-0.11_spark3.5.1 https://github.com/smatytsin/datafusion-comet.git
 
+git clone --depth 1 --single-branch --branch branch-0.11_spark3.5.7 https://github.com/smatytsin/datafusion-comet.git
+
+
 # для более старых (можно еще haswell)
 export RUSTFLAGS="-C target-cpu=broadwell"
 export CFLAGS="-march=broadwell"
@@ -27,7 +30,7 @@ cd datafusion-comet
 export COMET_FEATURES=hdfs
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 export CCACHE_DISABLE=1
-rm ./mvnw
+rm -rf ./mvnw
 ln -s /usr/lib/maven/bin/mvn ./mvnw
 
 make release-nogit PROFILES="-Pspark-3.5"
